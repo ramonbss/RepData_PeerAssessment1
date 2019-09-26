@@ -5,17 +5,11 @@ output:
     keep_md: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-options(warn=-1)
-library(lubridate)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-```
+
 
 ##             1- Loading the Dataset
-```{r Loading and preprocessing the data}
+
+```r
 #   1.1- Load the data ( i.e.read.csv() )
 data <- read.csv("activity.csv")
 
@@ -26,40 +20,56 @@ df <- group_by(df, date)
 
 
 ##             2-  What is the mean total number of steps taken per day?
-```{r}
 
+```r
 #       2.1- Calculate the total number of steps taken per day
 df_sum_per_day = summarise_all( df, sum,na.rm=TRUE )
 total_steps_per_day <- df_sum_per_day[2]
 
 #       2.1- Make a histogram of the total number of steps taken each day
 qplot( total_steps_per_day$steps, geom="histogram", xlab="steps", ylab="frequency" )
+```
 
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+
+```r
 #       2.3- Calculate and report the mean and median of the total number of steps taken per day
 mean_steps_per_day <- mean( df_sum_per_day$steps )
 median_steps_per_day <- median( df_sum_per_day$steps )
 ```
-  **The mean of total step per day is `r mean_steps_per_day` and its median is `r median_steps_per_day`.**
+  **The mean of total step per day is 9354.2295082 and its median is 10395.**
 
 ##             3-  What is the average daily activity pattern?
-```{r}
+
+```r
 #       3.1 Make a time series plot
 df_sum_per_interval = group_by(df, interval)
 df_mean <- summarise_all( df_sum_per_interval, mean, na.rm=TRUE )
 plot( df_mean$interval, df_mean$steps, type="l", xlab="5 Minutes Interval", ylab = "Mean Steps" )
 title(main="Average Number of Steps Taken")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
+```r
 #       3.2 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 max_steps <- df_mean$interval[ which.max(df_mean$steps) ]
 ```
-**There was a maximum of `r max_steps` steps taken.**
+**There was a maximum of 835 steps taken.**
 
 ##             4-  Imputing missing values
-```{r}
+
+```r
 #       4.1 Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 total_nas = sum( is.na(df$steps) )
 ```
-**This dataset has a total of `r total_nas` rows with NA values**
-```{r}
+**This dataset has a total of 2304 rows with NA values**
+
+```r
 #       4.2 Devise a strategy to fill NA values
 fill_with_mean <- function( df_by_date ){
     
@@ -83,6 +93,15 @@ df_filled <- fill_with_mean(df)
 #       4.4.1- Make a histogram of the total number of steps taken each day
 filled_sum_per_day = summarise_all( df_filled, sum,na.rm=TRUE )
 qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency" )
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+```r
 #       4.4.2- Calculate and report the mean and median total number of steps taken per day.
 filled_steps_mean <- mean( filled_sum_per_day$steps )
 filled_steps_median <- median( filled_sum_per_day$steps )
@@ -91,7 +110,8 @@ filled_steps_median <- median( filled_sum_per_day$steps )
   **Filling the NA entries of this dataset with the day mean had no impact in the final results.**
 
 ##             5-  Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 #       5.1- Create a new factor variable in the dataset with two levels – “weekday” and “weekend”
 wdays <- wday( ymd( df_filled$date ) )
 wdays[ wdays == 1 | wdays == 7 ] = "Weekend"
@@ -106,3 +126,5 @@ mean_steps = summarise(df_by_daytype, mean=mean(steps))
 g <- ggplot( mean_steps, aes( interval, mean ) )
 g + geom_line() + facet_grid( wdays ~ . ) + labs(title="Weekdays x Weekend Activity") + labs( x="5 Minutes Interval" , y="Number of Steps")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
