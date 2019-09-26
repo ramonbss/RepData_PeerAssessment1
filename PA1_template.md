@@ -92,7 +92,7 @@ fill_with_mean <- function( df_by_date ){
 df_filled <- fill_with_mean(df)
 #       4.4.1- Make a histogram of the total number of steps taken each day
 filled_sum_per_day = summarise_all( df_filled, sum,na.rm=TRUE )
-qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency" )
+qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", main="Average Number of Steps After Filling NAs" )
 ```
 
 ```
