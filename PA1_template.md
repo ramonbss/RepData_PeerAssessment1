@@ -98,18 +98,24 @@ qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 ```r
-qplot( total_steps_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", main="Average Number of Steps with NAs Removed", bins=53 )
-```
-
-![](PA1_template_files/figure-html/unnamed-chunk-4-2.png)<!-- -->
-
-```r
 #       4.4.2- Calculate and report the mean and median total number of steps taken per day.
 filled_steps_mean <- mean( filled_sum_per_day$steps )
 filled_steps_median <- median( filled_sum_per_day$steps )
+
+#       4.4.3- Does filling with NA change the final values? What was the impact of fill the dataset NA values?
+comparission_table = matrix( c( mean_steps_per_day, median_steps_per_day,filled_steps_mean, filled_steps_median ), nrow=2, byrow=TRUE )
+rownames( comparission_table ) <- c("no_NAs", "filled")
+colnames( comparission_table ) <- c("Mean", "Median")
+print( comparission_table )
 ```
-#### 4.4.3- Does filling with NA change the final values? What was the impact of fill the dataset NA values?
-  **Filling the NA entries of this dataset with the day mean had no impact in the final results.**
+
+```
+##           Mean Median
+## no_NAs 9354.23  10395
+## filled 9354.23  10395
+```
+
+  **Filling the NA entries of this dataset with the day mean had no impact in the mean/median of the steps taken per day.**
 
 ##             5-  Are there differences in activity patterns between weekdays and weekends?
 

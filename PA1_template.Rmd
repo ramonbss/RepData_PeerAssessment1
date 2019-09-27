@@ -61,6 +61,7 @@ total_nas = sum( is.na(df$steps) )
 **This dataset has a total of `r total_nas` rows with NA values**
 ```{r}
 #       4.2 Devise a strategy to fill NA values
+# This function will fill NA values with the mean of steps from the current day
 fill_with_mean <- function( df_by_date ){
     
     dates <- unique( df_by_date$date )
@@ -86,8 +87,14 @@ qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency
 #       4.4.2- Calculate and report the mean and median total number of steps taken per day.
 filled_steps_mean <- mean( filled_sum_per_day$steps )
 filled_steps_median <- median( filled_sum_per_day$steps )
+
+#       4.4.3- Does filling with NA change the final values? What was the impact of fill the dataset NA values?
+comparission_table = matrix( c( mean_steps_per_day, median_steps_per_day,filled_steps_mean, filled_steps_median ), nrow=2, byrow=TRUE )
+rownames( comparission_table ) <- c("no_NAs", "filled")
+colnames( comparission_table ) <- c("Mean", "Median")
+print( comparission_table )
 ```
-#### 4.4.3- Does filling with NA change the final values? What was the impact of fill the dataset NA values?
+
   **Filling the NA entries of this dataset with the day mean had no impact in the mean/median of the steps taken per day.**
 
 ##             5-  Are there differences in activity patterns between weekdays and weekends?
