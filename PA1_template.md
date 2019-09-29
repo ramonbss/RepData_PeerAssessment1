@@ -80,6 +80,13 @@ qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 ```r
+# Plot without NAs
+qplot( total_steps_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", binwidth=1000, main="Same data with NAs removed" )
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-2.png)<!-- -->
+
+```r
 #       4.4.2- Calculate and report the mean and median total number of steps taken per day.
 filled_steps_mean <- mean( filled_sum_per_day$steps )
 filled_steps_median <- median( filled_sum_per_day$steps )
