@@ -71,6 +71,7 @@ total_nas = sum( is.na(df$steps) )
 
 ```r
 #       4.2 Devise a strategy to fill NA values
+# This function will fill NA values with the mean of steps from the current day
 fill_with_mean <- function( df_by_date ){
     
     dates <- unique( df_by_date$date )
@@ -89,7 +90,9 @@ fill_with_mean <- function( df_by_date ){
     df_by_date
 }
 #       4.3- Create a new dataset that is equal to the original dataset but with the missing data filled in.
-df_filled <- fill_with_mean(df)
+#df_filled <- fill_with_mean(df)
+df_filled = df
+df_filled$steps <- with(df, impute(steps, mean))
 #       4.4.1- Make a histogram of the total number of steps taken each day
 filled_sum_per_day = summarise_all( df_filled, sum,na.rm=TRUE )
 qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", main="Average Number of Steps After Filling NAs", bins=53 )
@@ -110,9 +113,9 @@ print( comparission_table )
 ```
 
 ```
-##           Mean Median
-## no_NAs 9354.23  10395
-## filled 9354.23  10395
+##            Mean   Median
+## no_NAs  9354.23 10395.00
+## filled 10766.19 10766.19
 ```
 
   **Filling the NA entries of this dataset with the day mean had no impact in the mean/median of the steps taken per day.**
