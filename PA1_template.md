@@ -27,11 +27,7 @@ df_sum_per_day = summarise_all( df, sum,na.rm=TRUE )
 total_steps_per_day <- df_sum_per_day[2]
 
 #       2.1- Make a histogram of the total number of steps taken each day
-qplot( total_steps_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency" )
-```
-
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+qplot( total_steps_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", binwidth=1000 )
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
@@ -72,30 +68,13 @@ total_nas = sum( is.na(df$steps) )
 ```r
 #       4.2 Devise a strategy to fill NA values
 # This function will fill NA values with the mean of steps from the current day
-fill_with_mean <- function( df_by_date ){
-    
-    dates <- unique( df_by_date$date )
-    for( curr_date in dates ){
-        indexes <- which( df_by_date$date == curr_date )
-        # Get the mean of current date
-        date_mean = mean( df_by_date$steps[ indexes ], na.rm=TRUE )
-        
-        if( is.na( date_mean ) )
-            date_mean = 0
-        
-        # Get NA's indexes
-        nas_indexes = which( is.na( df_by_date$steps[ indexes ] ) )
-        df_by_date$steps[indexes][ nas_indexes ] = date_mean
-    }
-    df_by_date
-}
 #       4.3- Create a new dataset that is equal to the original dataset but with the missing data filled in.
 #df_filled <- fill_with_mean(df)
 df_filled = df
 df_filled$steps <- with(df, impute(steps, mean))
 #       4.4.1- Make a histogram of the total number of steps taken each day
 filled_sum_per_day = summarise_all( df_filled, sum,na.rm=TRUE )
-qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", main="Average Number of Steps After Filling NAs", bins=53 )
+qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", main="Average Number of Steps After Filling NAs", binwidth=1000 )
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
@@ -118,7 +97,7 @@ print( comparission_table )
 ## filled 10766.19 10766.19
 ```
 
-  **Filling the NA entries of this dataset with the day mean had no impact in the mean/median of the steps taken per day.**
+  **Filling the NA entries of this dataset with the day mean had a slighty impact on the mean/median of the steps taken per day.**
 
 ##             5-  Are there differences in activity patterns between weekdays and weekends?
 

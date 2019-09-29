@@ -34,7 +34,7 @@ df_sum_per_day = summarise_all( df, sum,na.rm=TRUE )
 total_steps_per_day <- df_sum_per_day[2]
 
 #       2.1- Make a histogram of the total number of steps taken each day
-qplot( total_steps_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency" )
+qplot( total_steps_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", binwidth=1000 )
 
 #       2.3- Calculate and report the mean and median of the total number of steps taken per day
 mean_steps_per_day <- mean( df_sum_per_day$steps )
@@ -69,7 +69,7 @@ df_filled = df
 df_filled$steps <- with(df, impute(steps, mean))
 #       4.4.1- Make a histogram of the total number of steps taken each day
 filled_sum_per_day = summarise_all( df_filled, sum,na.rm=TRUE )
-qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", main="Average Number of Steps After Filling NAs", bins=53 )
+qplot( filled_sum_per_day$steps, geom="histogram", xlab="Steps", ylab="Frequency", main="Average Number of Steps After Filling NAs", binwidth=1000 )
 #       4.4.2- Calculate and report the mean and median total number of steps taken per day.
 filled_steps_mean <- mean( filled_sum_per_day$steps )
 filled_steps_median <- median( filled_sum_per_day$steps )
